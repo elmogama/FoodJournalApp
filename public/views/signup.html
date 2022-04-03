@@ -1,0 +1,59 @@
+<html>
+    <body>
+        <div id = signindiv>
+            <h1>The Gouda Life</h1>
+            <div>
+                <form action = "/register" method = "POST" class = "textfield">
+                    <p style="display:inline-table;">Username: <input type="text" name = "user" id = "username" class = "userInputs" required> </p>
+                    <p style="display:inline-table;">Password:<input type="text" name = "pass" id = "password" class = "userInputs" required> </p>
+                    <p style="display:inline-table;">Email:<input type="text" name = "mail" id = "email" class = "userInputs" required> </p>
+                    <div id = "signinbdiv">
+                        <button type= "submit" id = "signinb">Register</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        <h4 id = "createac"><a href="/">Already Have An Account? Sign In Here!</a></h4>
+    </body>
+    <style>
+        #signindiv{
+            position: relative;
+            margin-top: 70px;
+            margin-left: 40%;
+            width: 30%;
+            max-width: 400px;
+            min-width: 300px;
+            text-align: center;
+            color: green;
+            border: 1px solid lightgreen;
+            border-radius: 3px;
+        }
+        .userInputs{
+            align-content: left;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            border-bottom: 1px solid lightgreen;
+            color:black;
+        }
+        .textfield{
+            color: black;
+        }
+        #signinb{
+            background-color: lightgreen;
+            color: white;
+            font-size: 25px;
+            border: none;
+            border-radius: 0px;
+            max-width: 400px;
+            min-width: 300px;
+            height: 40px;
+            margin-top: 20px;
+        }
+        #createac{
+            margin-left: 40%;
+            color: blue;
+        }
+    </style>
+</html>

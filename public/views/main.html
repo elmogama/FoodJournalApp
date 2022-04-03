@@ -1,0 +1,78 @@
+<html>
+    <body>
+        <form action = "/" method="GET">
+            <button type = "submit" id = "signoutb">Sign Out</button>
+        </form>
+        <div id = "titlediv">
+            <h1 id = "title"> The Gouda Life </h1>
+        </div>
+        <div id = "buttonholder">
+            <form action = "/addfoodpage" method = "GET" class = "textfield">
+                <button type= "submit" id = "addb">Add Food</button>
+            </form>
+        </div>
+        <div id = foodcontentdiv>
+            <table>
+                <tr id = "foodheaders">
+                    <th>Food</th>
+                    <th>Fat</th>
+                    <th>Carbs</th>
+                    <th>Protein</th>
+                </tr>
+                <tr id = "foodcontent">
+                    <!--- Add DOM Manipulation for showing 
+                           user food logs on given day -->
+                </tr>
+            </table>
+        </div>
+    </body>
+    <style>
+        #signoutb{
+            position: relative;
+            background-color: white;
+            color: lightgreen;
+            font-size: 15px;
+            border: 1px solid lightgreen;
+            border-radius: 5px;
+            width: 150px;
+            height: 40px;
+            float: right;
+        }
+        #titlediv{
+            width: 100%;
+            border: none;
+            height: 100px;
+            border-radius: 5px;
+            background-color: lightgreen;
+        }
+        #title{
+            text-align: center;
+            padding-top: 20px;
+            font-size: 50px;
+            color: white;
+        }
+        #addb{
+            background-color: lightgreen;
+            color: white;
+            font-size: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 150px;
+            height: 40px;
+            margin-top: 20px;
+            float: right;
+            margin-bottom: 20px;
+        }
+        #foodcontentdiv, table{
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td{
+            border: 1px solid lightgreen;
+        }
+        #foodheaders > th{
+            width: 25%;
+            font-size: 25px;
+        }
+    </style>
+</html>
