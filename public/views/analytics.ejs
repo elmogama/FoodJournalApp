@@ -1,0 +1,288 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src='https://cdn.plot.ly/plotly-2.11.1.min.js'></script>
+        <title>Analytics</title>
+        <style>
+            body{
+                padding-bottom: 30px;
+                height: 455px;
+            }
+
+            #gear{
+                font-size: 40px;
+                width: 45px;
+                padding-left: 5px;
+                float: right;
+                transition: 1s;
+                margin-top: 15px;
+                border-radius: 8px;
+                outline: none;
+                border: none;
+                background-color: white;
+            }
+            #gear:hover{
+                cursor: pointer;
+                color: green;
+                background-color: rgb(240, 240, 240);
+            }
+            #settings-cont{
+                right: 10px; 
+                width: fit-content; 
+                position:absolute ;
+                text-align: left;
+                background-color: white;
+                padding: 5px;
+                border: 1px solid lightgray;
+                border-radius: 4px;
+            }
+            #signout{
+                color: white;
+                background-color: #da686093;
+                transition: 0.5s;
+            }
+            #signout:hover{
+                background-color: #da6860;
+                cursor: pointer;
+            }
+            .settings{
+                border: none;
+                padding: 10px;
+                border-radius: 0px;
+                transition: 0.5s;
+                font-size: 20px;
+                height: 40px;
+            }
+
+
+            #title{
+                position: absolute;
+                color: rgba(0, 128, 0, 0.9);
+                font-size: 75px;
+                border-radius: 4px;
+            }
+            #title-row{
+                width: 100%;
+                border-radius: 4px;
+                margin-bottom: 0px;
+                height: 100px;
+            }
+            #menu{
+                margin-bottom: 0px;
+                position: absolute;
+                border: none;
+                background-color: white;
+                height: fit-content;
+                overflow: hidden;
+                width: 200px;
+            }
+            #analytics{
+                border-left: 17px solid green;
+                border-bottom: 1px solid green;
+            }
+            .tabs{
+                font-size: large;
+                color: rgb(0, 0, 0);
+                text-align: center;
+                position: relative;
+                height: 50px;
+                margin-left: -15px;
+                padding-top: 12px;
+                width: 114%;
+                border-top: 1px solid green;
+                transition: 0.5s;
+            }
+            .tabs:hover{
+                color: green;
+                background-color: rgb(230, 230, 230);
+                cursor: pointer;
+            }
+            #main-content{
+                color: black;
+                margin-left: 225px;
+                overflow: hidden;
+            }
+            input{
+                display: inline-table; 
+                float: right;
+                width: 30px;
+                height: 40px;
+                font-size: 25px;
+                border-radius: 8px;
+                margin: 10px;
+                border: none;
+                color: black;
+                background-color: rgb(248, 248, 248);
+                outline: none;
+                transition: 0.5s;
+            }
+            input:hover{
+                cursor: default;
+                color: darkgreen;
+                background-color: white;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="container-fluid">
+            <div id = "title-row">
+                <h1 id="title"></h1>
+                <button id = "gear">&#9881;
+                    <div id ="settings-cont" style="display: none;">
+                        <div class="settings" id="signout">Sign Out</div>
+                    </div>
+                </button>
+            </div>
+
+            <div style="border: 1px solid black; margin-bottom: 10px;"></div>
+
+            <div id = "content-row">
+                <div id="menu">
+                    <div class="tabs" id="dashboard">Dashboard</div>
+                    <div class="tabs" id="analytics">Analytics</div>
+                </div>
+            </div>
+            <div style="height: 65px;border-right: 2px solid green; border-left: 2px solid green; background-color: rgb(248, 248, 248); margin-left: 250px; margin-bottom: 10px;">
+                <h3 style="padding-left: 10px;display: inline-table;">Visualize Your Habits For The Month Of <%= month%></h3>
+                <input type="month" onchange="newDate(event)">
+            </div>
+
+            <div id="main-content">
+
+                <div style="border: 1px solid black; margin-bottom: 10px;"></div>
+
+                <div style="border-right: 2px solid green; border-left: 2px solid green; margin: 10px; margin-left: 25px; margin-right: 0px;">
+                    <div id = "calorieChart" style="width: 100%; height: 300px; display: inline-block;"></div>
+                </div>
+
+                <div style="border: 1px solid black; margin-bottom: 10px;"></div>
+
+                <div style="border-right: 2px solid green; border-left: 2px solid green; margin: 10px; margin-left: 25px; margin-right: 0px;">
+                    <div id = "macroChart" style="width: 100%; height: 300px; display: inline-block;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        $(document).on('click', '#dashboard', function(){
+            var currentDate = new Date();
+            var dd = String(currentDate.getDate()).padStart(2, '0');
+            var mm = String(currentDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = currentDate.getFullYear();
+            currentDate = yyyy + "-" + mm + "-" + dd;
+
+            var form = document.createElement('form');
+            form.style.visibility = 'hidden';
+            form.action = '/main/' + currentDate;
+            document.body.appendChild(form)
+            form.submit()
+        })
+        $(document).on('click', '#signout', function(){
+            var form = document.createElement('form')
+            form.style.visibility = 'hidden'
+            form.method = 'POST'
+            form.action = '/signout'
+
+            document.body.appendChild(form) // forms cannot be submitted outside of body
+            form.submit()
+        })
+        $(document).on('click', '#gear', function(){
+            var dis = document.getElementById('settings-cont')
+            if(dis.style.display == "none"){
+                dis.style.display = "block"
+            } 
+            else{
+                dis.style.display = "none"
+            }
+        })
+        function newDate(e){
+            var form = document.createElement('form')
+            form.style.visibility = 'hidden'
+            form.method = 'GET'
+            form.action = "/analytics/" + e.target.value.toString().split("-")[1]
+
+            document.body.appendChild(form) // forms cannot be submitted outside of body
+            form.submit()
+        }
+
+        var xValues = '<%= dates%>'
+        xValues = xValues.split(',')
+        for (var i = 0; i < xValues.length; i++){ 
+            xValues[i] = parseInt(xValues[i])
+        }
+        var y1Values = '<%= calories%>'
+        y1Values = y1Values.split(',')
+        for (var i = 0; i < y1Values.length; i++){ 
+            y1Values[i] = parseInt(y1Values[i])
+        }
+        var y2Values = '<%= fats%>'
+        y2Values = y2Values.split(',')
+        for (var i = 0; i < y2Values.length; i++){ 
+            y2Values[i] = parseInt(y2Values[i])
+        }
+        var y3Values = '<%= proteins%>'
+        y3Values = y3Values.split(',')
+        for (var i = 0; i < y3Values.length; i++){ 
+            y3Values[i] = parseInt(y3Values[i])
+        }
+        var y4Values = '<%= carbs%>'
+        y4Values = y4Values.split(',')
+        for (var i = 0; i < y4Values.length; i++){ 
+            y4Values[i] = parseInt(y4Values[i])
+        }
+
+
+
+        var calData = [{
+            x: xValues,
+            y: y1Values,
+            name: "Calories",
+            marker: {color: 'lightgray'},
+            type: 'scatter'
+        }];
+        var layout = {
+            title: 'Daily Calories During <%= month%>',
+            xaxis: {title: 'Day', range: [0, 31],showgrid: false, tick0: 0, dtick: 1},
+            yaxis: {title: 'Calories', autorange: true, zeroline: false}
+        }
+        Plotly.newPlot('calorieChart', calData, layout)
+
+
+
+        var fatData = {
+            x: xValues,
+            y: y2Values,
+            name: "Fat (g)",
+            marker: {color: 'red'},
+            type: 'scatter'
+        }
+        var proteinData = {
+            x: xValues,
+            y: y3Values,
+            name: "Protein (g)",
+            marker: {color: 'green'},
+            type: 'scatter'
+        }
+        var carbData = {
+            x: xValues,
+            y: y4Values,
+            name: "Carbohydrate (g)",
+            marker: {color: 'blue'},
+            type: 'scatter'
+        }
+        var data = [fatData, proteinData, carbData]
+        var layout = {
+            title: 'Daily Macros During <%= month%>',
+            xaxis: {title: 'Day', range: [0, 31], showgrid: false, tick0: 0, dtick: 1},
+            yaxis: {title: 'Macro Amount (g)', autorange: true, zeroline: false}
+        }
+        Plotly.newPlot('macroChart', data, layout)
+
+    </script>
+</html>

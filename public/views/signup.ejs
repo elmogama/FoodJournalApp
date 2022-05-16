@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Sign Up Page</title>
+	
+<style type="text/css" media="screen">
+	body{
+		height:97.5vh;
+		background:
+		linear-gradient(to bottom right,transparent 50%,rgb(124, 220, 124) 50%) bottom/180% 110% no-repeat,
+		linear-gradient(97deg, white 0%, white 80%) top/100% 100% no-repeat;
+	}
+	#main-cont{
+		position: absolute;
+		height: 395px;
+		width: 400px;
+		max-width: 450px;
+		text-align: center;
+		font-size: 30px;
+		color: darkgreen;
+		font-family: Arial, Helvetica, sans-serif;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: rgb(210, 255, 210);
+		border: none;
+		border-radius: 4px;
+		overflow: hidden;
+	}
+	#app-title{
+		background-color: rgba(206, 255, 206, 0.25);
+		color: green;
+	}
+	#signupPhrase{
+		font-size: 20px;
+		background-color: white;
+		height: 30px;
+		padding-top: 5px;
+		margin-top: -20px;
+	}
+	.inputs{
+		height: 40px;
+		width: 90%;
+		padding-left: 10px;
+		border: none;
+		border-radius: 8px;
+		margin-bottom: 10px;
+		box-shadow: 1px 1px black;
+		outline: none;
+	}
+	.signupbuttons{
+		background-color: white;
+		border: none;
+		border-radius: 4px;
+		width: 120px;
+		height: 30px;
+		float: right;
+		margin-top: 20px;
+		margin-right: 10px;
+		transition: 0.5s;
+	}
+	.signupbuttons:hover{
+		color: green;
+		cursor: pointer;
+	}
+	#signinlink{
+		color: blue;
+	}
+	#signintext{
+		font-size: medium;
+		margin-left: 10px;
+		margin-top: 18px;
+		margin-bottom: 20px;
+		float: left;
+	}
+	#errormessage{
+		color: red;
+		background-color: rgba(255, 196, 196, 0.534);
+		position: absolute;
+		float: left;
+		width: 60%;
+		font-size: 15px;
+		padding: 5px 5px 5px 5px;
+		border-radius: 8px;
+		margin-left: 12px;
+		margin-top: 20px;
+		font-size: 15px;
+	}
+</style>
+</head>
+
+<body>
+	<div id = "background-shape"></div>
+	<div id = "main-cont">
+		<div><h3 id = "app-title">TITLE</h3><p id = "signupPhrase">Sign Up Now!</p>
+			<div id = "inputs-cont">
+				<form  action = "/signup" method = "POST">
+					<input name = "user" class="inputs" type="text" placeholder="Enter Username" required autocomplete="off">
+					<input name = "pass" class="inputs" type="password" placeholder="Enter Password" required autocomplete="off">
+					<input name = "email" class="inputs" type="text" placeholder="Enter Email" required autocomplete="off">
+					
+					<button type="submit" class = "signupbuttons">Sign Up</button>
+						<% if (locals.errormessage){ %>
+							<p id = "errormessage">
+								<%=errormessage%>
+							</p>
+						<% } %>
+				</form>
+			</div>
+			<p id = "signintext">Already Have An Account? <a href = "/signin" id = "signinlink">Sign In Here!</a></p>
+		</div>
+	</div>
+</body>
+
+</html>

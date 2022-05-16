@@ -1,0 +1,594 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <title>Food Logger</title>
+        <style>
+            body{
+                padding-bottom: 30px;
+                height: 455px;
+            }
+            .generalInputs{
+                border: none;
+                border-bottom: 1px solid green;
+                width: 90%;
+                margin-top: 5px;
+                margin-left: 1%;
+                border-radius: 0px;
+                outline: none;
+            }
+            #editViewBackground{
+                background-color: rgba(220, 220, 220, 0.75);
+                height: 100%;
+                width: 100%;
+                z-index: 1;
+                position: fixed;
+            }
+            #editView{
+                overflow-y: auto;
+                height: fit-content;
+                min-height: 20%;
+                width: 50%;
+                top: 20%;
+                left: 30%;
+                position: relative;
+                border: 1px solid gray;
+                border-radius: 4px;
+                background-color: white;
+                z-index: 2;
+            }
+            #searchResultsCont{
+                position: absolute;
+                margin-left: 1%;
+                width: 90%;
+                padding: 2px;
+                border: 1px solid lightgray;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background-color: white;
+                cursor: pointer;
+                z-index: 1;
+            }
+            #searchResultsCont > div[id*=food_]:hover {
+                background-color: rgb(230, 230, 230);
+            }
+            #closeEdit{
+                border-radius: 2px;
+                border: none;
+                float: right;
+                background-color: #df9d9893;
+                font-size: 15px;
+                transition: 0.5s;
+            }
+            #closeEdit:hover{
+                cursor: pointer;
+                background-color: #da6860;
+            }
+            #foodInputs{
+                width: 50%;
+                margin-left: 5px;
+                z-index: -2;
+            }
+            #enterFood{
+                width: 98%;
+                margin: 1%;
+                height: 30px;
+                border-radius:5px;
+                color: black; 
+                background-color: rgba(206, 255, 206, 0.25);
+                outline: none; 
+                border: none;
+                transition: 0.5s;
+            }
+            #enterFood:hover{
+                background-color: green;
+                color: white;
+                cursor: pointer;
+            }
+            #servingSize{
+                color: red;
+            }
+
+
+            #gear{
+                font-size: 40px;
+                width: 45px;
+                padding-left: 5px;
+                float: right;
+                transition: 1s;
+                margin-top: 15px;
+                border-radius: 8px;
+                outline: none;
+                border: none;
+                background-color: white;
+            }
+            #gear:hover{
+                cursor: pointer;
+                color: green;
+                background-color: rgb(240, 240, 240);
+            }
+            #settings-cont{
+                right: 10px; 
+                width: fit-content; 
+                position:absolute ;
+                text-align: left;
+                background-color: white;
+                padding: 5px;
+                border: 1px solid lightgray;
+                border-radius: 4px;
+            }
+            #signout{
+                color: white;
+                background-color: #da686093;
+                transition: 0.5s;
+            }
+            #signout:hover{
+                background-color: #da6860;
+                cursor: pointer;
+            }
+            .settings{
+                border: none;
+                padding: 10px;
+                border-radius: 0px;
+                transition: 0.5s;
+                font-size: 20px;
+                height: 40px;
+            }
+
+
+            #title{
+                position: absolute;
+                color: rgba(0, 128, 0, 0.9);
+                font-size: 75px;
+                border-radius: 4px;
+            }
+            #title-row{
+                width: 100%;
+                border-radius: 4px;
+                margin-bottom: 0px;
+                height: 100px;
+            }
+            #menu{
+                margin-bottom: 0px;
+                position: absolute;
+                border: none;
+                background-color: white;
+                height: fit-content;
+                overflow: hidden;
+                width: 200px;
+            }
+            #dashboard{
+                border-left: 17px solid green;
+            }
+            #analytics{
+                border-bottom: 1px solid green;
+            }
+            .tabs{
+                font-size: large;
+                color: rgb(0, 0, 0);
+                text-align: center;
+                position: relative;
+                height: 50px;
+                margin-left: -15px;
+                padding-top: 12px;
+                width: 114%;
+                border-top: 1px solid green;
+                transition: 0.5s;
+            }
+            .tabs:hover{
+                color: green;
+                background-color: rgb(230, 230, 230);
+                cursor: pointer;
+            }
+            .content-row{
+                width: 100%;
+                height: 100%;
+            }
+            #main-content{
+                color: black;
+                margin-left: 225px;
+                overflow: hidden;
+            }
+            #calender{
+                width: 38px;
+                height: 40px;
+                font-size: 25px;
+                border-radius: 8px;
+                border: none;
+                color: black;
+                background-color: white;
+                padding-left: 5px;
+                padding-right: 5px;
+                outline: none;
+                transition: 0.5s;
+            }
+            #calender:hover{
+                cursor: default;
+                color: darkgreen;
+                background-color: rgb(230, 230, 230);
+            }
+            #food{
+                border: none;
+                margin-top: 15px;
+                margin-left: 1px;
+                border-radius: 0px;
+                display: inline-block;
+                color: black;
+                font-size: 22px;
+                transition: 0.5s;
+            }
+            div[id*=log-cont-]:hover > #food{
+                color: green;
+            }
+            #total-cont{
+                color: black;
+                border-radius: 0px;
+                border-left: 2px solid green;
+                border-right: 2px solid green;
+                border-bottom: none;
+                border-top: none;
+                padding: 10px;
+                transition: 0.5s;
+            }
+            #total-cont:hover{
+                color: green;
+                background-color: rgb(230, 230, 230);
+                cursor: pointer;
+            }
+            .log-cont{
+                border: 2px solid green;
+                border-bottom: none;
+                border-top: none;
+                border-radius: 0px;
+                padding: 10px;
+                background-color: rgb(249, 249, 249);
+                margin-top: 10px;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+            .log-cont:hover{
+                cursor: pointer;
+                background-color: rgb(230, 230, 230);
+            }
+            .logdeletebutton{
+                display: none;
+                float: right;
+                margin-top: 3px;
+                margin-right: 3px;
+                border-radius: 8px;
+                border: none;
+                color: black;
+                background-color: #ff000093;
+                transition: 0.5s;
+            }
+            .log-cont:hover > .logdeletebutton{
+                display: block;
+            }
+            .logdeletebutton:hover{
+                cursor: pointer;
+                background-color: #ff0000;
+            }
+            table {
+                font-family: arial, sans-serif;
+                width: 100%;
+                margin-bottom: 5px;
+                border-radius: 4px;
+                color: black;
+            }
+            td, th{
+                padding: 10px;
+                background-color: white;
+                border: 1px solid lightgray;
+            }
+            #edit{
+                border-radius: 8px;
+                font-size: 20px;
+                color: rgb(0, 0, 0);
+		        background-color: rgb(210, 255, 210);
+                float: right;
+                transition: 0.5s;
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-right: 0px;
+                margin-top: 5px;
+                margin-bottom: 20px;
+            }
+            #edit:hover{
+                color: white;
+                cursor: pointer;
+                background-color: green;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="editViewBackground" style="display: none;">
+            <div id = "editView">
+                <input type="text" placeholder="Search For Foods To Add!" id="searchBar" class="generalInputs" oninput="getSearchResult()" autocomplete="off">
+                <button id = "closeEdit">X</button>
+                <div id="searchResultsCont">
+
+                </div>
+                
+                <div id="foodInputs">
+                    <label style="margin-left: 5px; margin-top: 10px; margin-bottom: 0px;"><u>Type Of Serving</u></label>
+                    <input id="foodInput" class="generalInputs" type="text" placeholder="Food Name" required autocomplete="off">
+                    <input id="servingsInput" class="generalInputs" type="number" placeholder="Number Of Servings" required autocomplete="off">
+                    <label style="margin-left: 5px; margin-top: 10px; margin-bottom: 0px;"><u>Serving Size:</u><span id= "servingSize"></span></label>
+
+                    <br><label style="margin-left: 5px; margin-top: 10px; margin-bottom: 0px;"><u>Amounts Per Serving</u></label>
+                    <br><input id="caloriesInput" class="generalInputs" type="number" placeholder="Calories" required autocomplete="off">
+                    <br><input id="fatInput" class="generalInputs" type="number" placeholder="Fat (g)" required autocomplete="off">
+                    <br><input id="proteinInput" class="generalInputs"type="number" placeholder="Protein (g)" required autocomplete="off">
+                    <br><input id="carbohydrateInput" class="generalInputs" type="number" placeholder="Carbohydrates (g)" required autocomplete="off">
+                </div>
+                <button id="enterFood">Enter Food</button>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div id = "title-row">
+                <h1 id="title"></h1>
+                <button id = "gear">&#9881;
+                    <div id ="settings-cont" style="display: none;">
+                        <div class="settings" id="signout">Sign Out</div>
+                    </div>
+                </button>
+            </div>
+            <div style="border: 1px solid black; margin-bottom: 10px;"></div>
+            <div id = "content-row">
+                <div id="menu">
+                    <div class="tabs" id="dashboard">Dashboard</div>
+                    <div class="tabs" id="analytics">Analytics</div>
+                </div>
+                
+                <div id="main-content">
+                    <% if (locals.logs) { %>
+                        <% var totalCal = 0; %>
+                        <% var totalFat = 0; %>
+                        <% var totalProtein = 0; %>
+                        <% var totalCarbohydrate = 0; %>
+                        <% for (var i = 0; i < logs.length; i++) { %>
+                            <% totalCal += (logs[i].calories * logs[i].servings) %>
+                            <% totalFat += (logs[i].fat * logs[i].servings) %>
+                            <% totalProtein += (logs[i].protein * logs[i].servings) %>
+                            <% totalCarbohydrate += (logs[i].carbohydrate * logs[i].servings) %>
+                        <% } %>
+                    <% } else { %>
+                        <% var totalCal = 0; %>
+                        <% var totalFat = 0; %>
+                        <% var totalProtein = 0; %>
+                        <% var totalCarbohydrate = 0; %>
+                    <% } %>
+                    <div id="total-cont" class="log-cont">
+                        <h1 style="font-size: 22px;">Total Consumption</h1>
+                        <table style="display: none; width: 100%;">
+                            <tr>
+                                <th>Calories</th>
+                                <th>Fat (g)</th>
+                                <th>Protein (g)</th>
+                                <th>Carbohydrates (g)</th>
+                            </tr>
+                            <tr id = "totalInfo">
+                                <td><%= totalCal%></td>
+                                <td><%= totalFat%></td>
+                                <td><%= totalProtein%></td>
+                                <td><%= totalCarbohydrate%></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="border: 1px solid black; width: 100%; margin-bottom: 5px;"></div>
+
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <p id="currentDate" style="float: left; margin-top: 5px; font-size: 22px;"><%=month%> <%=day%>, <%=year%></p>
+                        <input type="date" id="calender" onchange="newDate(event)">
+                    </div>
+
+                    <div style="border: 1px solid black; width: 100%; margin-bottom: 10px;"></div>
+
+                    <% if (locals.log) { %>
+                        <%= log %>
+                    <% } else { %>
+                        <% for (var i = 0; i < logs.length; i++) { %>
+                            <div id = "log-cont-<%= i%>" class = "log-cont">
+                                <h2 id = "food"><%= logs[i].food %><span style="color:black;"> &#10005; <%= logs[i].servings %></span></h2>
+                                <button class = "logdeletebutton" id = "deleteButton,<%=logs[i].food%>-<%=logs[i].date%>">&minus;</button>
+                                <div id = "info-<%= i%>" style="display: none;">
+                                    <table>
+                                        <tr>
+                                            <th>Calories</th>
+                                            <th>Fat (g)</th>
+                                            <th>Protein (g)</th>
+                                            <th>Carbohydrates (g)</th>
+                                        </tr>
+                                        <tr>
+                                            <td><%= logs[i].calories %></td>
+                                            <td><%= logs[i].fat %></td>
+                                            <td><%= logs[i].protein %></td>
+                                            <td><%= logs[i].carbohydrate %></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="width: 100%; border: 1px solid black;"></div>
+                        <% } %>
+                    <% } %>
+                    <div id="edit">&plus;</div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        $(document).on('click', '#analytics', function(){
+            var currentDate = new Date();
+            var mm = String(currentDate.getMonth() + 1).padStart(2, '0');
+            currentDate = mm;
+
+            location.href = "/analytics/" + currentDate
+        })
+
+        $(document).on('click', '.logdeletebutton', function(){
+            var params = event.srcElement.id.split(',')[1]
+            let food = params.split('-')[0]
+            let date = params.split('-')[1]
+
+            $.ajax({
+                type: "POST",
+                url: "/deletelog/" + food + "&" + date,
+                success: function(response){
+                    if (response == "success"){
+                        location.reload()
+                    }
+                    else if (response == "failure"){
+                        alert("There Was An Error Deleting Your Item! Try Again Later!")
+                    }
+                    else{
+                        alert("Something Went Wrong! Try Again Later!")
+                    }
+                }
+            });
+        })
+        $(document).on('click', '#edit', function(){
+            document.getElementById("editViewBackground").style.display = "inline"
+        })
+        $(document).on('click', '#closeEdit', function(){
+            document.getElementById('searchBar').value = ""
+            document.querySelectorAll('.searchResults').forEach(e => e.remove())
+            document.getElementById("editViewBackground").style.display = "none"
+        })
+        $(document).on('click', '#signout', function(){
+            var form = document.createElement('form')
+            form.style.visibility = 'hidden'
+            form.method = 'POST'
+            form.action = '/signout'
+
+            document.body.appendChild(form) // forms cannot be submitted outside of body
+            form.submit()
+        })
+        $(document).on('click', '#gear', function(){
+            var dis = document.getElementById('settings-cont')
+            if(dis.style.display == "none"){
+                dis.style.display = "block"
+            } 
+            else{
+                dis.style.display = "none"
+            }
+        })
+        $(document).on('click', '#enterFood', function(){
+            let date = window.location.pathname.split("/")[2]
+            let food = document.getElementById('foodInput').value
+            let servings = document.getElementById('servingsInput').value
+            let calories = document.getElementById('caloriesInput').value
+            let fat = document.getElementById('fatInput').value
+            let protein = document.getElementById('proteinInput').value
+            let carbohydrate = document.getElementById('carbohydrateInput').value
+            
+            $.ajax({
+                type: "POST",
+                url: "/addFood/" + food,
+                data: 
+                {
+                    food: food,
+                    date: date,
+                    servings: servings,
+                    calories: calories,
+                    fat: fat,
+                    protein: protein,
+                    carbohydrate: carbohydrate
+                },
+                success: function(response){
+                    if (response == "success") {
+                        location.reload()
+                    }
+                }
+            })
+        })
+        
+        $(document).on('click', '#total-cont', function(){
+            totalContainerInfo = document.getElementById("total-cont").getElementsByTagName('table')[0]
+            
+            if(totalContainerInfo.style.display == "none"){
+                totalContainerInfo.style.display = "table"
+            }
+            else{
+                totalContainerInfo.style.display = "none"
+            }
+        })
+        $(document).on('click', '.log-cont', function(e){
+            foodInfo = e.currentTarget.id.split("-")[2]
+            foodInfo = "info-" + foodInfo
+            foodInfoDiv = document.getElementById(foodInfo)
+            if(foodInfoDiv.style.display == "none"){
+                foodInfoDiv.style.display = "inherit"
+            }
+            else{
+                foodInfoDiv.style.display = "none"
+            }
+        })
+        
+        function getSearchResult() {
+            let searchedFood = document.getElementById('searchBar').value
+            var searchCont = document.getElementById("searchResultsCont")
+            if (searchedFood != "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/getFood/" + searchedFood,
+                    success: function(response){
+                        document.querySelectorAll('.searchResults').forEach(e => e.remove())
+
+                        if (Array.isArray(response)) {
+                            for ( var i = 0; i < response.length; i++) {
+                                var searchResult = document.createElement('div')
+                                searchResult.className = "searchResults"
+                                searchResult.id = "food_" + response[i]
+                                searchResult.innerHTML = response[i]
+                                searchResult.onclick = function(e){
+                                    searchedFood = e.currentTarget.innerHTML
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "/addFood/" + searchedFood,
+                                        success: function(response){
+                                            document.querySelectorAll('.searchResults').forEach(e => e.remove())
+
+                                            document.getElementById('foodInput').value = response[0].food
+                                            document.getElementById('servingSize').innerHTML = " " + response[0].servingsize + " (g)"
+                                            document.getElementById('caloriesInput').value = response[0].calories
+                                            document.getElementById('fatInput').value = response[0].fat
+                                            document.getElementById('proteinInput').value = response[0].protein
+                                            document.getElementById('carbohydrateInput').value = response[0].carbohydrate
+                                        }
+                                    });
+                                }
+                                searchCont.appendChild(searchResult)
+                            }
+                        }
+                        else {
+                            var searchResult = document.createElement('div')
+                            searchResult.className = "searchResults"
+                            searchResult.innerHTML = response
+                            searchCont.appendChild(searchResult)
+                        }
+                    }
+                });
+            }
+            else {
+                document.querySelectorAll('.searchResults').forEach(e => e.remove())
+            }
+        }
+
+        function newDate(e){
+            var form = document.createElement('form')
+            form.style.visibility = 'hidden'
+            form.method = 'GET'
+            form.action = "/main/" + e.target.value.toString()
+
+            document.body.appendChild(form) // forms cannot be submitted outside of body
+            form.submit()
+        }
+    </script>
+</html>
